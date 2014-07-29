@@ -558,18 +558,20 @@ ol.format.WKT.Parser.prototype.match = function(type) {
 
 /**
  * Try to parse the tokens provided by the lexer.
- * @return {ol.geom.Geometry|ol.geom.GeometryCollection} The geometry.
+ * @return {!ol.geom.Geometry|!ol.geom.GeometryCollection} The geometry.
  */
 ol.format.WKT.Parser.prototype.parse = function() {
   this.consume_();
   var geometry = this.parseGeometry_();
+  goog.asserts.assert(goog.isDef(geometry));
   goog.asserts.assert(this.token_.type == ol.format.WKT.TokenType.EOF);
   return geometry;
 };
 
 
 /**
- * @return {!ol.geom.Geometry|!ol.geom.GeometryCollection} The geometry.
+ * @return {!ol.geom.Geometry|!ol.geom.GeometryCollection|undefined}
+ *     The geometry.
  * @private
  */
 ol.format.WKT.Parser.prototype.parseGeometry_ = function() {
@@ -594,7 +596,7 @@ ol.format.WKT.Parser.prototype.parseGeometry_ = function() {
 
 
 /**
- * @return {!Array.<ol.geom.Geometry>} A collection of geometries.
+ * @return {!Array.<ol.geom.Geometry>|undefined} A collection of geometries.
  * @private
  */
 ol.format.WKT.Parser.prototype.parseGeometryCollectionText_ = function() {
@@ -614,7 +616,7 @@ ol.format.WKT.Parser.prototype.parseGeometryCollectionText_ = function() {
 
 
 /**
- * @return {Array.<number>} All values in a point.
+ * @return {Array.<number>|undefined} All values in a point.
  * @private
  */
 ol.format.WKT.Parser.prototype.parsePointText_ = function() {
@@ -631,7 +633,7 @@ ol.format.WKT.Parser.prototype.parsePointText_ = function() {
 
 
 /**
- * @return {!Array.<!Array.<number>>} All points in a linestring.
+ * @return {!Array.<!Array.<number>>|undefined} All points in a linestring.
  * @private
  */
 ol.format.WKT.Parser.prototype.parseLineStringText_ = function() {
@@ -648,7 +650,7 @@ ol.format.WKT.Parser.prototype.parseLineStringText_ = function() {
 
 
 /**
- * @return {!Array.<!Array.<number>>} All points in a polygon.
+ * @return {!Array.<!Array.<number>>|undefined} All points in a polygon.
  * @private
  */
 ol.format.WKT.Parser.prototype.parsePolygonText_ = function() {
@@ -665,7 +667,7 @@ ol.format.WKT.Parser.prototype.parsePolygonText_ = function() {
 
 
 /**
- * @return {!Array.<!Array.<number>>} All points in a multipoint.
+ * @return {!Array.<!Array.<number>>|undefined} All points in a multipoint.
  * @private
  */
 ol.format.WKT.Parser.prototype.parseMultiPointText_ = function() {
@@ -687,8 +689,8 @@ ol.format.WKT.Parser.prototype.parseMultiPointText_ = function() {
 
 
 /**
- * @return {!Array.<!Array.<number>>} All linestring points
- *                                        in a multilinestring.
+ * @return {!Array.<!Array.<number>>|undefined}
+ *     All linestring points in a multilinestring.
  * @private
  */
 ol.format.WKT.Parser.prototype.parseMultiLineStringText_ = function() {
@@ -705,7 +707,8 @@ ol.format.WKT.Parser.prototype.parseMultiLineStringText_ = function() {
 
 
 /**
- * @return {!Array.<!Array.<number>>} All polygon points in a multipolygon.
+ * @return {!Array.<!Array.<number>>|undefined}
+ *     All polygon points in a multipolygon.
  * @private
  */
 ol.format.WKT.Parser.prototype.parseMultiPolygonText_ = function() {
@@ -722,7 +725,7 @@ ol.format.WKT.Parser.prototype.parseMultiPolygonText_ = function() {
 
 
 /**
- * @return {!Array.<number>} A point.
+ * @return {!Array.<number>|undefined} A point.
  * @private
  */
 ol.format.WKT.Parser.prototype.parsePoint_ = function() {
@@ -833,7 +836,7 @@ ol.format.WKT.Parser.GeometryConstructor_ = {
 
 
 /**
- * @enum {(function(): Array)}
+ * @enum {(function(): (Array|undefined))}
  * @private
  */
 ol.format.WKT.Parser.GeometryParser_ = {
