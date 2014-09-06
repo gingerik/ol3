@@ -3,6 +3,7 @@ goog.provide('ol.format.WKT');
 goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('ol.Feature');
+goog.require('ol.coordinate');
 goog.require('ol.format.Feature');
 goog.require('ol.format.TextFeature');
 goog.require('ol.geom.Geometry');
@@ -666,7 +667,7 @@ ol.format.WKT.Parser.prototype.parseLineStringText_ = function() {
  */
 ol.format.WKT.Parser.prototype.parsePolygonText_ = function() {
   if (this.match(ol.format.WKT.TokenType.LEFT_PAREN)) {
-    var coordinates = this.parseLineStringTextList_();
+    var coordinates = this.parseLinearRingTextList_();
     if (this.match(ol.format.WKT.TokenType.RIGHT_PAREN)) {
       return coordinates;
     }
@@ -789,6 +790,26 @@ ol.format.WKT.Parser.prototype.parseLineStringTextList_ = function() {
   var coordinates = [];
   do {
     coordinates.push(this.parseLineStringText_());
+  } while (this.match(ol.format.WKT.TokenType.COMMA));
+  return coordinates;
+};
+
+
+/**
+ * @return {!Array.<!Array.<number>>} An array of points.
+ * @private
+ */
+ol.format.WKT.Parser.prototype.parseLinearRingTextList_ = function() {
+  var coordinates = [];
+  do {
+    var ring = this.parseLineStringText_();
+    var len = ring.length;
+    if (len >= 2) {
+      if (!ol.coordinate.equals(ring[0], ring[len - 1])) {
+        throw new Error('Polygon contains a non-closed LinearRing');
+      }
+    }
+    coordinates.push(ring);
   } while (this.match(ol.format.WKT.TokenType.COMMA));
   return coordinates;
 };

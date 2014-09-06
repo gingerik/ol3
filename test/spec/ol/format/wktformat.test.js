@@ -184,10 +184,13 @@ describe('ol.format.WKT', function() {
       format.readGeometry('LINESTRING(1 2,3 4');
     }).to.throwException();
     expect(function() {
-      format.readGeometry('POLYGON(1 2,3 4))');
+      format.readGeometry('POLYGON(1 2,3 4,1 2))');
     }).to.throwException();
     expect(function() {
-      format.readGeometry('POLGON((1 2,3 4))');
+      format.readGeometry('POLGON((1 2,3 4,1 2))');
+    }).to.throwException();
+    expect(function() {
+      format.readGeometry('POLYGON((1 2,3 4,5 6))');
     }).to.throwException();
     expect(function() {
       format.readGeometry('LINESTRING(1.2,3 4');
@@ -196,7 +199,7 @@ describe('ol.format.WKT', function() {
       format.readGeometry('MULTIPOINT((1 2),3 4))');
     }).to.throwException();
     expect(function() {
-      format.readGeometry('MULTIPOLYGON((1 2,3 4))');
+      format.readGeometry('MULTIPOLYGON((1 2,3 4,1 2))');
     }).to.throwException();
     expect(function() {
       format.readGeometry('GEOMETRYCOLLECTION(1 2,3 4)');
