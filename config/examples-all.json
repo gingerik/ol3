@@ -1,6 +1,8 @@
 {
   "exports": [],
-  "src": ["src/**/*.js", "build/examples/all.js"],
+  "src": ["src/**/*.js", "build/examples/all.js",
+      "externs/oli.js",
+      "externs/olx.js"],
   "compile": {
     "externs": [
       "externs/bingmaps.js",
@@ -9,8 +11,6 @@
       "externs/example.js",
       "externs/geojson.js",
       "externs/jquery-1.7.js",
-      "externs/oli.js",
-      "externs/olx.js",
       "externs/proj4js.js",
       "externs/tilejson.js",
       "externs/topojson.js",
